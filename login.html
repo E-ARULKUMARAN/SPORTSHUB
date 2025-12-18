@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Sports E-Commerce</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      width: 350px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .input-group label {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #2575fc, #6a11cb);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn:hover { opacity: 0.9; }
+    .links {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .links a {
+      color: #2575fc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .links div { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2><i class="fa-solid fa-right-to-bracket"></i> Login</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" required>
+      </div>
+      <button class="btn" type="submit">Login</button>
+    </form>
+    <div class="links">
+      <div>Don’t have an account? <a href="signup.html">Sign up here</a></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !password) {
+        alert("⚠️ Please fill in all fields!");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+          credentials: "include" // for session cookies
+        });
+
+        if (!response.ok) {
+          throw new Error(`❌ Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert("✅ Login successful!");
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("role", data.role);
+          window.location.href = "index.html";
+        } else {
+          alert("❌ " + (data.message || "Invalid username or password"));
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("⚠️ Could not connect to backend. Ensure server is running on port 3000.");
+      }
+    });
+  </script>
+</body>
+</html>

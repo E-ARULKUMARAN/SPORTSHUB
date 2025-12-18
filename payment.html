@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment | SportsHub</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      background-size: 400% 400%;
+      animation: gradientFlow 10s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 400px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      animation: fadeInUp 1.2s ease forwards;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 114, 255, 0.4);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h2 {
+      font-size: 1.9rem;
+      margin-bottom: 18px;
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      font-weight: 700;
+      animation: glowText 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 8px rgba(255,255,255,0.3); }
+      to { text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 17px;
+      color: #eaeaea;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #d6eaff;
+      letter-spacing: 0.5px;
+    }
+
+    select, input {
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    select:hover, input:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    select option {
+      background: #0072ff;
+      color: white;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 17px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 20px rgba(0, 114, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transform: skewX(-20deg);
+      transition: 0.5s;
+    }
+
+    button:hover::before {
+      left: 125%;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6);
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: white;
+      top: 0;
+      animation: fall 4s linear infinite;
+      opacity: 0.7;
+      border-radius: 50%;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-20px) rotate(0deg); }
+      to { transform: translateY(100vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Payment Details</h2>
+    <p id="itemName"></p>
+    <p id="itemPrice"></p>
+
+    <label for="quantity">Enter Quantity:</label>
+    <input type="number" id="quantity" min="1" placeholder="Enter how many items" />
+
+    <label for="paymentOption">Select Payment Method:</label>
+    <select id="paymentOption">
+      <option value="UPI">UPI</option>
+      <option value="Cash on Delivery">Cash on Delivery</option>
+    </select>
+
+    <button onclick="confirmPayment()">Confirm Payment</button>
+  </div>
+
+  <script>
+    // 🎊 Confetti
+    function createConfetti() {
+      for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        confetti.style.animationDuration = (3 + Math.random() * 2) + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    // 🧾 Load item data
+    const item = JSON.parse(localStorage.getItem("purchaseItem"));
+    if (!item) {
+      alert("No item selected!");
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("itemName").innerText = `Item: ${item.name}`;
+    document.getElementById("itemPrice").innerText = `Price: ₹${item.price} (per item)`;
+
+    // 💳 Payment process
+    async function confirmPayment() {
+      const method = document.getElementById("paymentOption").value;
+      const quantity = parseInt(document.getElementById("quantity").value);
+
+      if (!quantity || quantity <= 0) {
+        alert("⚠️ Please enter a valid quantity!");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:3000/api/buy/${item.id}`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ quantity }),
+});
+
+        const data = await res.json();
+
+        if (data.success) {
+          createConfetti();
+          alert(`🎉 Payment Successful via ${method}!\n${quantity} item(s) purchased.\n${data.message}`);
+          localStorage.removeItem("purchaseItem");
+          setTimeout(() => window.location.href = "index.html", 1000);
+        } else {
+          alert(`⚠️ Payment failed: ${data.message}`);
+        }
+      } catch (err) {
+        console.error("Error:", err);
+        alert("Server error! Please try again.");
+      }
+    }
+  </script>
+</body>
+</html>

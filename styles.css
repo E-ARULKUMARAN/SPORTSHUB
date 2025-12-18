@@ -1,0 +1,354 @@
+/* styles.css — Sports E-commerce (Flipkart-like) with Dark Mode */
+
+/* RESET & BASE */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* DARK MODE */
+body.dark {
+  background: #121212;
+  color: #f5f5f5;
+}
+
+body.dark .topbar,
+body.dark .menu,
+body.dark .card,
+body.dark .item-card {
+  background: #1f1f1f;
+  color: #f5f5f5;
+  border-color: #333;
+}
+
+body.dark .search input {
+  background: #2a2a2a;
+  color: #eee;
+  border-color: #444;
+}
+
+body.dark .chip {
+  background: #2a2a2a;
+  color: #80bfff;
+}
+
+body.dark .chip:hover {
+  background: #0078d7;
+  color: #fff;
+}
+
+/* HEADER */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.4em;
+  color: #0078d7;
+}
+
+.search input {
+  width: 350px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.search input:focus {
+  border-color: #0078d7;
+  box-shadow: 0 0 0 2px rgba(0,120,215,0.15);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#userArea span {
+  font-weight: 500;
+}
+
+#userArea button {
+  margin-left: 8px;
+  background: #0078d7;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.menuBtn {
+  font-size: 1.4em;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.menu a:hover {
+  color: #0078d7;
+}
+
+.hidden {
+  display: none;
+}
+
+/* MAIN CONTENT */
+main {
+  padding: 20px;
+}
+
+section h2 {
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+/* ITEM CARDS */
+.item-card {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 10px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.item-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.item-card h3 {
+  font-size: 1.1em;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.item-card p {
+  font-size: 0.9em;
+  color: #555;
+  margin: 4px 0;
+}
+
+.item-card button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: #0078d7;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.item-card button:hover {
+  background: #005fa3;
+}
+
+.item-card button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+/* CATEGORY CHIPS */
+.catlist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.chip {
+  background: #e8f1fb;
+  color: #0078d7;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chip:hover {
+  background: #0078d7;
+  color: #fff;
+}
+
+/* LOGIN & FORMS */
+.card {
+  background: #fff;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 1em;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.card input:focus {
+  border-color: #0078d7;
+  box-shadow: 0 0 0 2px rgba(0,120,215,0.1);
+}
+
+.card button {
+  padding: 10px;
+  background: #0078d7;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card button:hover {
+  background: #005fa3;
+}
+
+#msg {
+  text-align: center;
+  color: #d33;
+  margin-top: 10px;
+}
+
+/* DARK MODE TOGGLE BUTTON */
+#themeToggle {
+  background: #0078d7;
+  color: #fff;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#themeToggle:hover {
+  background: #005fa3;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .search input {
+    width: 180px;
+  }
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+.payment-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.payment-card {
+  width: 400px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+.payment-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-card select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+.payment-card button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.payment-card button:hover {
+  background: #0056b3;
+}
+
+.payment-card p {
+  text-align: center;
+  margin-top: 10px;
+  color: green;
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup - SportsHub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      width: 380px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #222;
+    }
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .input-group label {
+      font-size: 14px;
+      color: #555;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-top: 3px;
+      display: none;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .link a {
+      color: #0072ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2><i class="fa-solid fa-user-plus"></i> SportsHub Signup</h2>
+    <form id="signupForm" novalidate>
+      <div class="input-group">
+        <label for="username">Full Name</label>
+        <input type="text" id="username" placeholder="Enter your full name" required>
+        <div class="error" id="nameError">Name must contain only letters and spaces.</div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Minimum 6 characters" required>
+        <div class="error" id="passwordError">Password must be at least 6 characters.</div>
+      </div>
+
+      <div class="input-group">
+        <label for="role">Account Type</label>
+        <select id="role" required>
+          <option value="">-- Select Role --</option>
+          <option value="customer">Customer</option>
+          <option value="dealer">Dealer</option>
+        </select>
+        <div class="error" id="roleError">Please select an account type.</div>
+      </div>
+
+      <button class="btn" type="submit">Sign Up</button>
+    </form>
+
+    <div class="link">
+      Already have an account? <a href="login.html">Login</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+
+      // Reset errors
+      document.querySelectorAll(".error").forEach(el => el.style.display = "none");
+
+      let valid = true;
+      const nameRegex = /^[A-Za-z ]+$/;
+
+      if (!nameRegex.test(username)) {
+        document.getElementById("nameError").style.display = "block";
+        valid = false;
+      }
+      if (password.length < 6) {
+        document.getElementById("passwordError").style.display = "block";
+        valid = false;
+      }
+      if (!role) {
+        document.getElementById("roleError").style.display = "block";
+        valid = false;
+      }
+      if (!valid) return;
+
+      try {
+        const res = await fetch("http://localhost:3000/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password, role })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          alert("✅ Signup successful! Please login now.");
+          window.location.href = "login.html";
+        } else {
+          alert("❌ Signup failed: " + (data.message || "Unknown error."));
+        }
+      } catch (err) {
+        console.error("Signup error:", err);
+        alert("⚠️ Server error. Check backend.");
+      }
+    });
+  </script>
+</body>
+</html>
